@@ -218,7 +218,11 @@
         </div>
     </div>
 
-    <div>
+    <div class="button-container">
+        <button class="start-button" id="startQuiz">Start Quiz</button>
+    </div>
+
+    <div class="button-container">
         <input type="checkbox" id="flipQuestionAnswer">
         <label for="flipQuestionAnswer">Flip Question and Answer</label>
     </div>
@@ -230,9 +234,6 @@
         <div>Stage: <span id="quizStage">1</span></div>
     </div>
 
-    <div class="button-container">
-        <button class="start-button" id="startQuiz">Start Quiz</button>
-    </div>
     <button class="stop-button" id="quitQuiz">Quit Quiz</button>
 
     <script>
@@ -305,10 +306,10 @@
             const answerArray = [answer, ...wrongAnswers];
             answerArray.sort(() => Math.random() - 0.5);
 
-            answerArray.forEach(answer => {
+            answerArray.forEach(option => {
                 const button = document.createElement('button');
-                button.textContent = answer;
-                button.addEventListener('click', checkAnswer.bind(null, answer === answer));
+                button.textContent = option;
+                button.addEventListener('click', () => checkAnswer(option === answer)); // Corrected line
                 answerOptions.appendChild(button);
             });
 
