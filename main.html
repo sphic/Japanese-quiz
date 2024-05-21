@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Japanese Study</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .lesson-columns {
+            display: flex;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .lesson-column {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .lesson-column:nth-child(2) {
+            border-left: 2px solid #ccc;
+        }
+
+        .correct {
+            background-color: green;
+            transition: background-color 0.5s ease;
+        }
+
+        .incorrect {
+            background-color: red;
+            transition: background-color 0.5s ease;
+        }
+
+        #quizContainer {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 28px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .start-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .stop-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        #quizCharacter {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        #answerOptions button {
+            font-size: 24px;
+            margin: 5px;
+        }
+
+        .lesson-container {
+            display: block; /* Change from "none" to "block" */
+        }
+    </style>
+</head>
+<body>
+    <h1>Japanese Study</h1>
+    <div class="container">
+        <button id="toggleLessons">Show Lessons</button>
+        <div class="lesson-container">
+            <div class="lesson-columns">
+                <div class="lesson-column">
+                    <h2>Vocabulary</h2>
+                    <ul>
+                        <li><input type="checkbox" id="Chapter1-V" 
+						data-set1='["わたし","がくせい","りゅうがくせい","せんせい","ともだち","にほんじん","だいがく","なまえ","せんこう","でんわばんごう","にほんご","じん","ねんせい","さい","にほん","えいご","れきし","おはようございます","おはよう","こんにちは","こんばんは","さようなら","しつれいします","じゃ、また","どうもありがとうございます","どういたしまして","すみません","おやすみなさい","いただきます","ごちそうさま","はい","はい、そうです","いいえ","れんしゅうしてください","みてください","きてください","かいてください","いってください","もういちどいってください","はなしてください","よんでください"]' 
+						data-set2='["I","Student","International Student","Teacher","Friend","Japanese Person","University","Name","Major","Phone Number","Japanese Language","Person","... year student","Years old","Japan","English Language","History","Good Morning","Good Morning (Causual)","Good Afternoon","Good Evening","Good Bye","Good Bye (formal)","See you later","Thank you very much","You are welcome","Sorry, excuse me","Good Night","Lets eat","Thank you for the food","Yes","Yes, thats right","No","Please Practice","Please look","Please listen,ask","Please write it","Please say it","Please say it again","Please speak","Please read it"]'>Chapter 1</li>
+						<li><input type="checkbox" id="Chapter2-V" 
+						data-set1='[""かさ","かばん","くつ","さいふ","じてんしゃ","しんぶん","とけい","ぼうし","ほん","ぎんこう","ゆうびんきょく","としょかん","この＋Noun","いくら","なん/なに","だれ","だれの ","どれ","どこ","・・・をください。","・・・をおねがいします。","さかな","にく","やさい","おかあさん","おとうさん","たかい","おいしい","おてら","ここ","これ","はい","いいえ","じゃあ","いらっしゃいませ""]' 
+						data-set2='[""Umbrella","Bag","Shoes","Wallet","Bicycle","Newpaper","Clock/watch","Hat","Book","Bank","Post office","library","This ","How much","What","Who","Whose","Which one","Where is?","Please give me…","… please","Fish","Meat","Vegetable","Mother","Father","Expensive, high","Delicious","Temple","Here","This","Yes","No","Then…","Welcome","]'>Chapter 2</li>
+						<li><input type="checkbox" id="Chapter3-V" 
+						data-set1='["おきます","ねます","たべます","のみます","みます","ききます","よみます","はなします","します","べんきょうします","きます","いきます","かえります","えいが","おんがく","あさごはん","ひるごはん","ばんごはん","うち","がっこう","あした","きょう","こんばん","まいにち","まいばん","しゅうまつ","どようび","にちようび","いつ","あまり＋negative","ぜんぜん","ちょっと","ときどき","よく","でも","Xはどうですか","ここ","みず","おちゃ","あさ","いい","はやい"]' 
+						data-set2='["To get up","To sleep","To eat","To drink","To see","To listen (to ask)","To read","To speak","To do","To study","To come","To go","To go back","Movie","Music","Breakfast","Lunch","Dinner","Home","School","Tomorrow","Today","Tonight","Every day","Every night","Weekend","Saturday","Sunday","When","(Not) very much","Not at all","A little","Sometimes","Often","But","How about X?","Here","Water","Green tea","Morning","Good","Early"]'>Chapter 3</li>
+						<li><input type="checkbox" id="Chapter4-V" 
+						data-set1='["うえ","した","みぎ","ひだり","まえ","うしろ","なか","ちかく","そと","となり","AとBのあいだ","おてら","こうえん","びょういん","ほんや","まち","いす","つくえ","かいもの","きのう","せんしゅう","あいます","かいます","かきます","しゃしんをとります","まちます","わかります","げつようび","かようび","すいようび","もくようび","きんようび","とき","アルバイト","たくさん","ひと","こども","どうして","だから","スーパー","バスてい","いぬ","ねこ","あります","います","それから","じかん"]' 
+						data-set2='["On,Above","Under","Right","Left","Front","Back","Inside","Nearby","Outside","Next to","between A and B","Temple","Park","Hospital","Bookstore","Town","Chair","Desk","Shopping","Yesterday","Last week","To meet","To buy","To write","To take photos","To wait","To understand","Monday","Tuesday","Wednesday","Thursday","Friday","When…","Part time job","A lot","Person","Child","Why","therefore","Supermarket","Bus stop","Dog","Cat","There is","There is","And then","time"]'>Chapter 4</li>
+						<li><input type="checkbox" id="Chapter5-V" 
+						data-set1='["おおきい","ちいさい","あたらしい","ふるい","やすい","たかい","いい","いそがしい","こわい","げんきな","すきな","あつい","さむい","おもしろい","つまらない","やさしい","むずかしい","かっこいい","たのしい","きらいな","きれいな","しずかな","にぎやかな","ひまな","のります","およぎます","ききます","でかけます","たべもの","のみもの","くだもの","やすみ","りょこう","うみ","てんき","たんじょうび","へや","どんな","いっしょに","おみやげ","しゅくだい","とても","だいじょうぶ"]' 
+						data-set2='["Big","Small","New","Old","Inexpensive","expensitive","Good","Busy","Scary","Healthy","to like","Hot","Cold","Interesting","Boring","Kind, easy","Difficult","Good-looking","Fun","to dislike","Beautiful, clean","Quiet","Lively","Not busy","To ride, to board","To swim","To ask","To go out","Food","Drink","Fruit","Holiday","Travel","Sea","Weather","Birthday","Room","What kind of","Together","Souvenier","Homework","Very","It's ok"]'>Chapter 5</li>
+						<li><input type="checkbox" id="Chapter6-V" 
+						data-set1='["でんわする","ともだちをつれてくる","きょうかしょをもってくる","まどをあける","まどをしめる","エアコンをつける","シャワーをあびる","おかねを かりる","かんじをおしえる","でんしゃをおりる","わすれる","へやにはいる","でんきを けす","ほんを かえす","パソコンをつかう","おかあさんをてつだう","にもつをもつ","がっこうをやすむ","あそぶ","しぬ","あとで","ほんとうですか","ゆっくり","よる","たいへんな","つぎ","こんしゅう","らいしゅう","こんげつ","らいげつ","ことし","らいねん","たばこを すう","たつ","すわる","いそぐ"]' 
+						data-set2='["To call","To bring a friend","To bring a textbook","To open a window","To close a window","To turn on the air conditioning","To take a shower","To borrow money","To teach kanji","To get off a train","To forget/to leave behind","To enter a room","To turn out the light","To return a book","To use a computer","To help one's mother","To hold baggage","To be absent from school","To spend time pleasantly","To die","Later on","Really?","Slowly","Night","tough","Next","This week","Next week","This month","Next month","This year","Next year","To smoke tobacco","To stand","To sit","To hurry"]'>Chapter 6</li>
+						<li><input type="checkbox" id="Chapter7-V" 
+						data-set1='["めがねをかける","きる","やせる","うたう","ぼうしをかぶる","はく","しる","すむ","はたらく","ふとる","けっこんする","ながい","みじかい","はやい","せがたかい","せがひくい","あたまがいい","かわいい","しんせつな","べんりな","かみ","くち","め","かぞく","ちち","はは","きょうだい","あに","おにいさん","おとうと","あね","おねえさん","いもうと","おとこの ひと","おんなの ひと","かいしゃ","しょくどう","デパート","うた","くるま","サークル","ひとり","ふたり","さんにん","よにん"]' 
+						data-set2='["to put on glasses","to put on clothes above your waist","to lose weight","to sing","to put on a hat","to put on items below your waist","to get to know","to live","to work","to gain weight","to get married","long","short in length","fast","tall in stature","short in stature","bright, smart, clever","cute","kind","convenient","hair","mouth","eye","family","my father","my mother","siblings","my older brother","someone's older brother","younger brother","my older sister","someone's older sister","younger sister","man","woman","company","cafeteria","department store","song","car","club activity","one person","two people","three people","four people"]'>Chapter 7</li>
+						<li><input type="checkbox" id="Chapter8-V" 
+						data-set1='["すてる","はじめる","いる","おそくなる","おふろにはいる","おもう","きる","つくる","もっていく","あめ,ゆきがふる","をあらう","いう","うんてんする","せんたくする","そうじする","りょうりする","じょうず","へたな","ゆうめいな","なにか","てんきよほう","はれ","あめ","くもり","ゆき","きおん","なつ","ふゆ","けさ","あさって","まいしゅう","こんげつ","らいげつ","かいしゃいん","しごと","ところ","はし","いつも","みんなで","ざんねんですね","～ついて","～ど","どう"]' 
+						data-set2='["to throw away","to begin","to need","to be late","to take a bath","to think","to cut","to make","to take","rain,snow falls","to wash","to say","to drive","to do laundry","to clean","to cook ","skillful","clumsy","famous","something","weather forecast","sunny weather","rain","cloudy weather","snow","weather temperature","summer","winter","this morning","day after tomorrow","every week","this month","next month","office worker","job; work; occupation","place","chopsticks","always","everyone","That's too bad.","about～","～degrees","how"]'>Chapter 8</li>
+						<li><input type="checkbox" id="Chapter9-V" 
+						data-set1='["おどる","おわる","くすりをのむ","にんきがある","はじまる","ひく","もらう","きく","おぼえる","でる","さんぽする","うんどうする","いじわる","たんご","さくぶん","しけん","いいこ","てがみ","おべんとう","びょうき","いろ","こんど","せんげつ","きょねん","あおい","あかい","くろい","しろい","さびしい","わかい","～から","～まで","ぜひ","ところで"]' 
+						data-set2='["to dance","Finishes","to take medicine","to be popular","begins","to play a string instrument or piano","to get","to listen to","to memorize","to attend, to exit","to take a walk","to do physical exercises","mean-spirited","word; vocabulary","essay; composition","exam","good child","letter","boxed lunch","illness","color","near future","last month","last year","blue","red","black","white","lonely","young","from ～","to～","by all means","by the way"]'>Chapter 9</li>
+						<li><input type="checkbox" id="Chapter10-V" 
+						data-set1='["きせつ","はる","あき","いしゃ","おかねもち","ゆうめいじん","せかい","せいかつ","いちばん","どちら","あたたかい","せずしい","つめたい","おそい","ねむい","ひくい","かんたん","なる","かかる","とまる","きめる","ごろごろする","りょこうする","れんしゅうする","えき","よやく","じかん","びよういん","ことし","りょうり","どうやって","どのぐらい","いっしゅうかん","いっかげつ","いちねん","このごろ","～ねんご"]' 
+						data-set2='["Season","Spring","Fall","Doctor","Rich person","Celebrity","World","Life","Best","Which","Warm","Cool, weather","Cold, thing","Slow,late","Sleepy","Low","Simple","To become","To take","To stay","To decide","To chill","To travel","To practice","Train station","Reservation","Time","Beauty parlor","This year","Cuisine","By what means","How much, long","For a week","For a month","For one year","These days","After ~ years"]'>Chapter 10</li>
+						<li><input type="checkbox" id="Chapter11-V" 
+						data-set1='["けんかする","しょうかいする","ちこくする","りゆうがくする","うそをつく","おなかがすく","クラスをやすむ","ペットをかう","クラスをサポる","クラスをとる","ならう","やまにのぼる","はしる","つかれる","やめる","がいこく","しゃちょう","かしゅ","かしゅ","しょうらい","ゆめ","おかし","じゅぎょう","かわ","みずうみ","じんじゃ","びじゅつかん","おまつり","おしょうがつ","こんがっき","らいがっき","しゅっしん","ひさしぶり","まあまあ","もっと","じゅぎょうのあと","ひゃくてん"]' 
+						data-set2='["to fight","to introduce","to be late","to study abroad","to lie","to become hungry","to be absent from class","to own a pet","to cut class","to take a class","to learn","to climb a mountain","to run","to get tired","to quit","foreign country","company president","company","singer","future","dream","snack","class","river","lake","shinto shrine","art museum","festival","new years","this semester","next semester","hometown","long time no see","so so","more","after class","100 points"]'>Chapter 11</li>
+						<li><input type="checkbox" id="Chapter12-V" 
+						data-set1='["せまい","ひろい","わるい","いたい","あまい","おおい","あるく","かぜをひく","ねつがある","せきがでる","わかれる","きんちょうする","しんぽいする","おなか","あし","ふつかよい","せいせき","かのじょ","かれ","のどがかわく","はらう","なくす","きょうみがある","すてきな","ふく","もの","きっぷ","ようじ","おてあらい","しあい","せいじ","いみ","おだいじに","げんきがない","できるだけ","たぶん","はじめて","にさんにち","おなじ"]' 
+						data-set2='["narro","wide","bad","hurt","sweet","many","to walk","to catch a cold","to have a fever","to cough","to break up","to get nervous","to worry","stomach","leg, foot","hangover","grade","she, girlfriend","he, boyfriend","to become thirsty","to pay","to lose","to be interested","lovely","clothes","thing","train ticket","business to take care of","restroom","match, game","politics","meaning","get well soon","dont look well","as much as possible","probably, maybe","for the first time","two or three days","same"]'>Chapter 12</li>
+						<li><input type="checkbox" id="Chapter13-V" 
+						data-set1='["アパート","アプリ","がいこくご","がっき","カレー","くうこう","セーター","ぜんぶ","マンション","みせ","バイク","いろいろな","うれしい","かなしい","からい","きびしい","きぶんがわるい","しあわせな","すごい","だめな","ちかい","おとな","からだ","こうちゃ","ことば","がんばる","やくそくをまもる","かんどうする","なく","はをみがく","~かい","いちにち","ふつか ","みっか ","よっか","いつか","むいか ","なのか","ようか ","ここのか","とおか"]' 
+						data-set2='["Apartment ","Application","Foreign language","Instrument","Curry","Airport","Sweater","All","Apartment (large building)","Shop, store","Motorcycle ","Various, different kind of thing","Glad","Sad","Spicy","Strict","To feel sick","happy (long term)","incredible, awesome","no good","Close by","Adult","Body","Black tea","Word, language","To do one's best","To keep a promise","to be moved","To cry","to brush teeth","#of times","One day","2 days, 2nd of the month","3 days, 3rd of the month","4 days, 4th of the month","5 days, 5th of the month","6 days, 6th of the month","7 days, 7th of the month","8 days, 8th of the month","9 days, 9th of the month","10th day of month"]'>Chapter 13</li>
+						<li><input type="checkbox" id="Chapter14-V" 
+						data-set1='["ほしい","えんぴつ","おさら","けしょうひん","チョコレート","トレーナー","ぬいぐるみ","バレンタインデー ","ホワイトデー ","マフラー ","みかん","ゆびわ","りれきしょ","あきらめる","おくる 送る","そうだんする","ちゅういする","にあう","プロポーズする","おしゃれな ","けちな","~くん","あげる","くれる","おかえし ","おくさん","おじさん","おばさん","ごしゅじんご","パートナー","りょうしん","~こ ","~さつ","~だい ","~ひき ","~ほん"]' 
+						data-set2='["to want","pencil","plate","cosmetics, makeup","chocolate","sweatshirt","stuffed animal","Valentine's Day","White Day (March 14)","winter scarf","mandarin orange","ring","résumé","to give up","to send","to consult; to ask for advice","to watch out, to warn","to look good on someone","to propose marriage","fashionable, stylish","stingy, cheap","Honorific for person of equal/lower status;","to give (tosomeone else)","someone gives me","return gift (a token of gratitude)","someone's wife","someone's uncle","someone's aunt","someone's husband","partner","both parents","counter for small objects","counter for books/magazines","counter for equipment/machines","counter for small animals","counter for long thin objects"]'>Chapter 14</li>
+						<li><input type="checkbox" id="Chapter15-V" 
+						data-set1='["よやくする ","おかねをおろす","かんこうする","さがす","さそう ","さんかする","しゃべる","そつぎょうする ","えいがかん","けいけん","ボランティアかつどう","よてい","りょかん","たのしみです 楽しみです","うる","きをつける","しらべる","はっぴょうする","ほけんにはいる","かぐ ","じしん","しめきり","しゅうかん","ちず","でんち","わりびきけん","えをかく","つきあう 付き合う","みえる","たてもの","ぜいきん","にわ","いちにちじゅう"," けど","さいきん","もういちど"]' 
+						data-set2='["to make a reservation","to withdraw money","to go sightseeing","to search for","to invite","to participate in","to chat","to graduate","movie theater","experience","volunteer actvities","plans","Japanese inn","ook forward to","to sell","to be careful","1to look up information","to present","to buy insurance","furniture","earthquake","deadline","customs","map","2battery","coupon","to draw a picture","to date, keep company with","to be visible","building","taxes","garden, yard","all day long","but, ...so","recently","One more time"]'>Chapter 15</li>
+						<li><input type="checkbox" id="Chapter16-V" 
+						data-set1='["あんないする","おこす","おごる","かす","せつめいする","つれていく","なおす","みせる 見せる","むかえにいく","むかえにくる","やくす","おや","しんせき","ぶんか","あつめる","あさねぼ","おちこむ","みちにまよう","みつかる","のりおくれる","えきいん","きまつしけん","ごみ","さとう","しょうがくきん","すいせんじょう","だす","わらう","きたない","けんきゅう","ごめん","たいふう","へんじ","きょうじゅうに","じゅぎょうちゅうに","ほかの"]' 
+						data-set2='["to show someone around","to wake someone up","to treat someone to a meal","to lend","to explain","to take someone somewhere","to fix","to show","to go pick someone up","to come pick you up","to translate","parent","relative","culture","to collect","to oversleep","to feel depressed","to get lost","to be found","to miss a bus/train","train station attendant","final exam","garbage","sugar","scholarship","letter of recommendation","to take out, turn in","to smile, laugh","dirty","research","sorry (casual)","typhoon","reply","by the end of today","during class","other"]'>Chapter 16</li>
+						<li><input type="checkbox" id="Chapter17-V" 
+						data-set1='["うまれる","たからくじにあたる","こむ","しゅうしょくする","りこんする","あかちゃん","おきゃくさん","かじ","きゅうりょう","サラリーマン","しゅしょう","ニュース","~によると","あぶない","うらやましい","つごうがわるい","たりる","なれる","じゅんび","でんしレンジ","りょう","おいのりする","おちゃ/コーヒーをいれる","おゆをわかす","かぎをかける","かみをとかす","けしょうする","ひげをそる","ぬぐ","かみ","ざんぎょう","さいあくな","つよい","おめでとうございます"]' 
+						data-set2='["to be born","to win the lottery","to get crowded","to get a full-time job","to get a divorce","baby","customer, guest","a fire","salary","salaryman, male office worker","prime minister","news","according to...","dangerous","jealous","to have a scheduling conflict","to be enough","to get used to","preparation","microwave","dorm","to pray","to make tea/coffee","to boil water","to lock a door","to brush hair","to do makeup","to shave one's beard","to take off clothes","paper","overtime work","the worst","strong","Congratulations!"]'>Chapter 17</li>
+						<li><input type="checkbox" id="Chapter18-V" 
+						data-set1='["あく","おちる","おとす","おゆがわく","きえる","こわす","こわれる","しまる","よごす","よごれる","カーテン","むし","ろうそく","おさきにしつれいします","おつかれさまです","かたづける","ころぶ","しょうゆ","たいせつな","ちゅうもんする","どうしよう","にっき","まず","~までに","むりな","はすかしい","ふあんな","あやまる","おす","かんがえる","さく","たすかる","たのむ","あかるい","くらい","けいたい","やちん","ゆうがた","おかげで"]' 
+						data-set2='["something opens","something falls","to drop something","water boils","to disappear","to break something","something breaks","something closes","to get","something gets dirty","curtain","bug","candle","Goodbye to coworkers","Greeting to coworkers","to tidy up","trips and falls down","soy sauce","important, precious","to order something","What should I do?","diary","first of all","by time, date","impossible, too much to ask","embarassing","anxious, worried","to apologize","to push","to think","bloom","to be helped, to be saved","to ask a favor","bright","dark","cellular phone","rent","evening","thanks to..."]'>Chapter 18</li>
+                        <!-- Add more lessons here -->
+                    </ul>
+                </div>
+
+                <div class="lesson-column">
+                    <h2>Kanji</h2>
+                    <ul>
+                        <li><input type="checkbox" id="Chapter2-K" 
+						data-set1='["一","二","三","四","五","六","七","八","九","十","百","千","万","時","時半","円"]' 
+						data-set2='["いち","に","さん","よん/し","ご","ろく","なな","はち","きゅう","じゅう","ひゃく","せん/ぜん","まん","じ","じはん","えん"]'>Chapter 2</li>
+						<li><input type="checkbox" id="Chapter4-K" 
+						data-set1='["上","下","右","左","前","後ろ","午前","午後","間","時間","近く","外","何","何時","本","時","お寺"]' 
+						data-set2='["うえ","した","みぎ","ひだり","まえ","うしろ","ごぜん","ごご","あいだ","じかん","ちかく","そと","なに/なん","なんじ","ほん","とき","おてら"]'>Chapter 4</li>
+						<li><input type="checkbox" id="Chapter5-K" 
+						data-set1='["大きい","小さい","新しい","古い","高い","安い","良い","忙しい","怖い","元気な","好きな","大好きな","私","日","日本","人","日本人","五分","十分","分かります","～月","～年","毎日","毎年"]' 
+						data-set2='["おおきい","ちいさい","あたらしい","ふるい","たかい","やすい","いい","いそがしい","こわい","げんきな","すきな","だいすきな","わたし","ひ","にほん","ひと","にほんじん","ごふん","じゅっぷん","わかります","（Number）がつ","（Number）ねん","まいにち","まいとし"]'>Chapter 5</li>
+						<li><input type="checkbox" id="Chapter6-K" 
+						data-set1='["食べる","飲む","見る","行く","来る","来ます","日曜日","月曜日","火曜日","木曜日","金曜日","土曜日","水","お金","今日","今週","今月","今年","来週","来月","来年","週末","毎月","毎週"]' 
+						data-set2='["たべる","のむ","みる","いく","くる","きます","にちようび","げつようび","かようび","もくようび","きんようび","どようび","みず","おかね","きょう","こんしゅう","こんげつ","ことし","らいしゅう","らいげつ","らいねん","しゅうまつ","まいつき","まいしゅう"]'>Chapter 6</li>
+						<li><input type="checkbox" id="Chapter7-K" 
+						data-set1='["着る","知る","住む","働く","太る","長い","口","目","家","家族","父","お父さん","母","お母さん","兄弟","兄","お兄さん","弟","姉","お姉さん","妹","男の人","女の人","町","せが高い","一人","二人","三人","四人"]' 
+						data-set2='["きる","しる","すむ","はたらく","ふとる","ながい","くち","め","いえ","かぞく","ちち","おとうさん","はは","おかあさん","きょうだい","あに","おにいさん","おとうと","あね","おねえさん","いもうと","おとこのひと","おんなのひと","まち","せがたかい","ひとり","ふたり","さんにん","よにん"]'>Chapter 7</li>
+						<li><input type="checkbox" id="Chapter8-K" 
+						data-set1='["始める","入る","思う","切る","作る","雨","雪","洗う","言う","話す","読む","洗濯する","料理する","手","上手な","下手な","有名な","名前","天気","晴れ","所","何か","毎週","今月","来月"]' 
+						data-set2='["はじめる","はいる","おもう","きる","つくる","あめ","ゆき","あらう","いう","はなす","よむ","せんたくする","りょうりする","て","じょうずな","へたな","ゆうめいな","なまえ","てんき","はれ","ところ","なにか","まいしゅう","こんげつ","らいげつ"]'>Chapter 8</li>
+						<li><input type="checkbox" id="Chapter9-K" 
+						data-set1='["終わる","楽しい","薬","聞く","覚える","出る","運動する","日本語","いい子","子ども","女の子","男の子","病気","色","先生","学生"]' 
+						data-set2='["おわる","たのしい","くすり","きく","おぼえる","でる","うんどうする","にほんご","いいこ","こども","おんなのこ","おとこのこ","びょうき","いろ","せんせい","がくせい"]'>Chapter 9</li>
+						<li><input type="checkbox" id="Chapter10-K" 
+						data-set1='["春","夏","秋","冬","持つ","お金持ち","車","電車","電気","電話","自転車","運転する","一番","暖かい","涼しい","冷たい","短い","低い","帰る","英語","駅","有名人","天ぷら","年上","時間","今年","料理","一週間","一か月","一年","三年後"]' 
+						data-set2='["はる","なつ","あき","ふゆ","もつ","おかねもち","くるま","でんしゃ","でんき","でんわ","じてんしゃ","うんてんする","いちばん","あたたかい","すずしい","つめたい","みじかい","ひくい","かえる","えいご","えき","ゆうめいじん","てんぷら","としうえ","じかん","ことし","りょうり","いっしゅうかん","いっかげつ","いちねん","さんねんご"]'>Chapter 10</li>
+						<li><input type="checkbox" id="Chapter11-K" 
+						data-set1='["休む","休み","春休み","冬休み","夏休み","習う","山","走る","買う","外国","中国","会う","会話","会社","社長","朝","夜","今朝","今晩","毎朝","毎晩","朝ご飯","昼ご飯","夜ご飯","夕ご飯","晩ご飯","川","海","湖","映画","後"]' 
+						data-set2='["やすむ","やすみ","はるやすみ","ふゆやすみ","なつやすみ","ならう","やま","はしる","かう","がいこく","ちゅうごく","あう","かいわ","かいしゃ","しゃちょう","あさ","よる","けさ","こんばん","まいあさ","まいばん","あさごはん","ひるごはん","よるごはん","ゆうごはん","ばんごはん","かわ","うみ","みずうみ","えいが","あと"]'>Chapter 11</li>
+						<li><input type="checkbox" id="Chapter12-K" 
+						data-set1='["広い","痛い","甘い","多い","寒い","暑い","熱い","熱がある","心配する","足","頭","医者","払う","物","飲み物","食べ物","着物","買い物","意味","同じ","お手洗い","元気がない","二三日"]' 
+						data-set2='["ひろい","いたい","あまい","おおい","さむい","あつい（Weather）","あつい（Things）","ねつがある","しんぱいする","あし","あたま","いしゃ","はらう","もの","のみもの","たべもの","きもの","かいもの","いみ","おなじ","おてあらい","げんきがない","にさんにち"]'>Chapter 12</li>
+						<li><input type="checkbox" id="Chapter13-K" 
+						data-set1='["乗る","歌","歌う","歌手","店","子供","週末","守る","お茶","言葉","体","悲しい","辛い","幸せ","感動する","泣く","悪い","色々な","時々","人々","分かる","気分","～分","～回"]' 
+						data-set2='["のる","うた","うたう","かしゅ","みせ","こども","しゅうまつ","まもる","おちゃ","ことば","からだ","かなしい","からい","しあわせ","かんどうする","なく","わるい","いろいろ","ときどき","ひとびと","わかる","きぶん","～ぶん","～かい"]'>Chapter 13</li>
+						<li><input type="checkbox" id="Chapter14-K" 
+						data-set1='["花","魚","肉","野菜","使う","相談する ","返す","お返し","送る","彼氏","彼女","両親","ご主人","奥さん","～台","～個","～匹"]' 
+						data-set2='["はな","さかな","にく","やさい","つかう","そうだんする","かえす","おかえし","おくる","かれし","かのじょ","りょうしん","ごしゅじん","おくさん","～だい","～こ","～ひき"]'>Chapter 14</li>
+						<li><input type="checkbox" id="Chapter15-K" 
+						data-set1='["予定","予約する","仕事","発表する ","売る","調べる","待つ","図書館","書く","旅館","旅行","映画館","地図","建物","付き合う"]' 
+						data-set2='["よてい","よやくする","しごと","はっぴょうする","うる","しらべる","まつ","としょかん","かく","りょかん","りょこう","えいがかん","ちず","たてもの","つきあう"]'>Chapter 15</li>
+						<li><input type="checkbox" id="Chapter16-K" 
+						data-set1='["文化","作文","説明する ","明日","直す","貸す","借りる","集める","台風","連れてくる","連れていく","道","困る","汚い","他","遅い","遅く","遅くなる","乗り遅れる ","速い（fast）","早い（early）","早く","笑う"]' 
+						data-set2='["ぶんか","さくぶん","せつめいする","あした","なおす","かす","かりる","あつめる","たいふう","つれてくる","つれていく","みち","こまる","きたない","ほか","おそい","おそく","おそくなる","のりおくれる","はやい","はやい","はやく","わらう"]'>Chapter 16</li>
+						<li><input type="checkbox" id="Chapter17-K" 
+						data-set1='["宿題","質問","試験","試合","教える","教室","慣れる","習慣","紙","手紙","強い","勉強する","顔","耳","服","少ない","当たる","本当"]' 
+						data-set2='["しゅくだい","しつもん","しけん","しあい","おしえる","きょうしつ","なれる","しゅうかん","かみ","てがみ","つよい"," べんきょうする","かお","みみ","ふく","すくない","あたる","ほんとう"]'>Chapter 17</li>
+						<li><input type="checkbox" id="Chapter18-K" 
+						data-set1='["消える","消す","落ちる","落とす","頼む","注文する ","注意する","虫","便利な","不安な","無理な","考える","謝る","押す","願う","お願いします","急ぐ","暗い"]' 
+						data-set2='["きえる","けす","おちる","おとす","たのむ","ちゅうもんする","ちゅういする","むし","べんりな","ふあんな","むりな","かんがえる","あやまる","おす","ねがう","おねがいします","いそぐ","くらい"]'>Chapter 18</li>
+						<!-- Add more lessons here -->
+						<!-- <li><input type="checkbox" id="Chapter1-1" data-set1='[""]' data-set2='[""]'>Chapter 1</li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <input type="checkbox" id="flipQuestionAnswer">
+        <label for="flipQuestionAnswer">Flip Question and Answer</label>
+    </div>
+
+    <div id="quizContainer">
+        <h2></h2>
+        <div id="quizCharacter"></div>
+        <div id="answerOptions"></div>
+        <div>Stage: <span id="quizStage">1</span></div>
+    </div>
+
+    <div class="button-container">
+        <button class="start-button" id="startQuiz">Start Quiz</button>
+    </div>
+    <button class="stop-button" id="quitQuiz">Quit Quiz</button>
+
+    <script>
+        const quizCharacter = document.getElementById('quizCharacter');
+        const answerOptions = document.getElementById('answerOptions');
+        const quizStage = document.getElementById('quizStage');
+        const quizContainer = document.getElementById('quizContainer');
+        const lessonContainer = document.querySelector('.lesson-container');
+        const toggleLessonsButton = document.getElementById('toggleLessons');
+        const flipCheckbox = document.getElementById('flipQuestionAnswer');
+
+        let currentStage = 1;
+        let masterSet1 = [];
+        let masterSet2 = [];
+        let currentTypeIndex = 0; // 0 for Kanji, 1 for Vocabulary
+
+        function startQuiz() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+            masterSet1 = [];
+            masterSet2 = [];
+
+            checkboxes.forEach(checkbox => {
+                const set1 = JSON.parse(checkbox.dataset.set1);
+                const set2 = JSON.parse(checkbox.dataset.set2);
+                masterSet1 = masterSet1.concat(set1);
+                masterSet2 = masterSet2.concat(set2);
+            });
+
+            if (masterSet1.length === 0 || masterSet2.length === 0) {
+                alert('Please select at least one lesson.');
+                return;
+            }
+
+            quizContainer.style.display = 'block';
+            lessonContainer.style.display = 'none'; // Add this line to collapse the menu
+            toggleLessonsButton.textContent = 'Show Lessons'; // Reset the button text
+            generateQuiz();
+        }
+
+        function generateQuiz() {
+            const randomIndex = Math.floor(Math.random() * masterSet1.length);
+            let question, answer;
+
+            if (flipCheckbox.checked) {
+                question = masterSet2[randomIndex];
+                answer = masterSet1[randomIndex];
+            } else {
+                question = masterSet1[randomIndex];
+                answer = masterSet2[randomIndex];
+            }
+
+            quizCharacter.textContent = question;
+            answerOptions.innerHTML = '';
+
+            const wrongAnswers = [];
+            while (wrongAnswers.length < 2) {
+                const randomWrongIndex = Math.floor(Math.random() * masterSet1.length);
+                let wrongAnswer;
+                if (flipCheckbox.checked) {
+                    wrongAnswer = masterSet1[randomWrongIndex];
+                } else {
+                    wrongAnswer = masterSet2[randomWrongIndex];
+                }
+                if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer)) {
+                    wrongAnswers.push(wrongAnswer);
+                }
+            }
+
+            const answerArray = [answer, ...wrongAnswers];
+            answerArray.sort(() => Math.random() - 0.5);
+
+            answerArray.forEach(answer => {
+                const button = document.createElement('button');
+                button.textContent = answer;
+                button.addEventListener('click', checkAnswer.bind(null, answer === answer));
+                answerOptions.appendChild(button);
+            });
+
+            quizStage.textContent = currentStage;
+            currentTypeIndex = (currentTypeIndex + 1) % 2; // Change the type for next question
+        }
+
+        function checkAnswer(isCorrect) {
+            if (isCorrect) {
+                quizContainer.classList.add('correct');
+                setTimeout(() => {
+                    quizContainer.classList.remove('correct');
+                    currentStage++;
+                    generateQuiz();
+                }, 500);
+            } else {
+                quizContainer.classList.add('incorrect');
+                setTimeout(() => {
+                    quizContainer.classList.remove('incorrect');
+                }, 500);
+            }
+        }
+
+        toggleLessonsButton.addEventListener('click', function() {
+            if (lessonContainer.style.display === 'none') {
+                lessonContainer.style.display = 'block';
+                toggleLessonsButton.textContent = 'Hide Lessons';
+            } else {
+                lessonContainer.style.display = 'none';
+                toggleLessonsButton.textContent = 'Show Lessons';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('startQuiz').addEventListener('click', startQuiz);
+            document.getElementById('quitQuiz').addEventListener('click', () => {
+                quizContainer.style.display = 'none';
+                lessonContainer.style.display = 'block'; // Ensure the menu is visible when quitting quiz
+                currentStage = 1;
+            });
+
+            flipCheckbox.addEventListener('change', generateQuiz);
+        });
+    </script>
+</body>
+</html>
