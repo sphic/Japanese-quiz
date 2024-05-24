@@ -305,10 +305,10 @@
             const answerArray = [answer, ...wrongAnswers];
             answerArray.sort(() => Math.random() - 0.5);
 
-            answerArray.forEach(answer => {
+            answerArray.forEach(ans => {
                 const button = document.createElement('button');
-                button.textContent = answer;
-                button.addEventListener('click', checkAnswer.bind(null, answer === answer));
+                button.textContent = ans;
+                button.addEventListener('click', () => checkAnswer(ans === answer));
                 answerOptions.appendChild(button);
             });
 
