@@ -235,7 +235,7 @@
     </div>
     <button class="stop-button" id="quitQuiz">Quit Quiz</button>
 
-    <script>
+        <script>
         const quizCharacter = document.getElementById('quizCharacter');
         const answerOptions = document.getElementById('answerOptions');
         const quizStage = document.getElementById('quizStage');
@@ -308,7 +308,7 @@
             answerArray.forEach(ans => {
                 const button = document.createElement('button');
                 button.textContent = ans;
-                button.addEventListener('click', () => checkAnswer(ans === answer));
+                button.addEventListener('click', () => checkAnswer(ans, answer));
                 answerOptions.appendChild(button);
             });
 
@@ -316,8 +316,8 @@
             currentTypeIndex = (currentTypeIndex + 1) % 2; // Change the type for next question
         }
 
-        function checkAnswer(isCorrect) {
-            if (isCorrect) {
+        function checkAnswer(selectedAnswer, correctAnswer) {
+            if (selectedAnswer === correctAnswer) {
                 quizContainer.classList.add('correct');
                 setTimeout(() => {
                     quizContainer.classList.remove('correct');
