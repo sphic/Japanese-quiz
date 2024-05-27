@@ -317,9 +317,13 @@ function generateQuiz() {
 }
 
 function checkAnswer(selectedAnswer, correctAnswer) {
+    console.log("Selected Answer:", selectedAnswer); // Debugging log
+    console.log("Correct Answer:", correctAnswer); // Debugging log
+
     const isCorrect = selectedAnswer === correctAnswer;
 
     if (isCorrect) {
+        console.log("Answer is correct."); // Debugging log
         quizContainer.classList.add('correct');
         setTimeout(() => {
             quizContainer.classList.remove('correct');
@@ -327,6 +331,7 @@ function checkAnswer(selectedAnswer, correctAnswer) {
             generateQuiz();
         }, 500);
     } else {
+        console.log("Answer is incorrect."); // Debugging log
         quizContainer.classList.add('incorrect');
         setTimeout(() => {
             quizContainer.classList.remove('incorrect');
@@ -354,6 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     flipCheckbox.addEventListener('change', generateQuiz);
 });
+
 
     </script>
 </body>
