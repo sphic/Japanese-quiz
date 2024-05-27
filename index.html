@@ -274,84 +274,81 @@
         }
 
         function generateQuiz() {
-            const randomIndex = Math.floor(Math.random() * masterSet1.length);
-            let question, answer;
+    const randomIndex = Math.floor(Math.random() * masterSet1.length);
+    let question, answer;
 
-            if (flipCheckbox.checked) {
-                question = masterSet2[randomIndex];
-                answer = masterSet1[randomIndex];
-            } else {
-                question = masterSet1[randomIndex];
-                answer = masterSet2[randomIndex];
-            }
+    if (flipCheckbox.checked) {
+        question = masterSet2[randomIndex];
+        answer = masterSet1[randomIndex];
+    } else {
+        question = masterSet1[randomIndex];
+        answer = masterSet2[randomIndex];
+    }
 
-            quizCharacter.textContent = question;
-            answerOptions.innerHTML = '';
+    quizCharacter.textContent = question;
+    answerOptions.innerHTML = '';
 
-            const wrongAnswers = [];
-            while (wrongAnswers.length < 2) {
-                const randomWrongIndex = Math.floor(Math.random() * masterSet1.length);
-                let wrongAnswer;
-                if (flipCheckbox.checked) {
-                    wrongAnswer = masterSet1[randomWrongIndex];
-                } else {
-                    wrongAnswer = masterSet2[randomWrongIndex];
-                }
-                if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer)) {
-                    wrongAnswers.push(wrongAnswer);
-                }
-            }
-
-            const answerArray = [answer, ...wrongAnswers];
-            answerArray.sort(() => Math.random() - 0.5);
-
-            answerArray.forEach(answer => {
-                const button = document.createElement('button');
-                button.textContent = answer;
-                button.addEventListener('click', checkAnswer.bind(null, answer === answer));
-                answerOptions.appendChild(button);
-            });
-
-            quizStage.textContent = currentStage;
-            currentTypeIndex = (currentTypeIndex + 1) % 2; // Change the type for next question
+    const wrongAnswers = [];
+    while (wrongAnswers.length < 2) {
+        const randomWrongIndex = Math.floor(Math.random() * masterSet1.length);
+        let wrongAnswer;
+        if (flipCheckbox.checked) {
+            wrongAnswer = masterSet1[randomWrongIndex];
+        } else {
+            wrongAnswer = masterSet2[randomWrongIndex];
         }
-
-        function checkAnswer(isCorrect) {
-            if (isCorrect) {
-                quizContainer.classList.add('correct');
-                setTimeout(() => {
-                    quizContainer.classList.remove('correct');
-                    currentStage++;
-                    generateQuiz();
-                }, 500);
-            } else {
-                quizContainer.classList.add('incorrect');
-                setTimeout(() => {
-                    quizContainer.classList.remove('incorrect');
-                }, 500);
-            }
+        if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer)) {
+            wrongAnswers.push(wrongAnswer);
         }
+    }
 
-        toggleLessonsButton.addEventListener('click', function() {
-            if (lessonContainer.style.display === 'none') {
-                lessonContainer.style.display = 'block';
-                toggleLessonsButton.textContent = 'Hide Lessons';
-            } else {
-                lessonContainer.style.display = 'none';
-                toggleLessonsButton.textContent = 'show Lessons';
-            }
-        });
+    const answerArray = [answer, ...wrongAnswers];
+    answerArray.sort(() => Math.random() - 0.5);
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('startQuiz').addEventListener('click', startQuiz);
-            document.getElementById('quitQuiz').addEventListener('click', () => {
-                quizContainer.style.display = 'none';
-                lessonContainer.style.display = 'block'; // Ensure the menu is visible when quitting quiz
-                currentStage = 1;
-            });
+    answerArray.forEach(option => {
+        const button = document.createElement('button');
+        button.textContent = option;
+        button.addEventListener('click', checkAnswer.bind(null, option === answer));
+        answerOptions.appendChild(button);
+    });
 
-            flipCheckbox.addEventListener('change', generateQuiz);
-        });
-    </script>
-</body>
-</html>
+    quizStage.textContent = currentStage;
+    currentTypeIndex = (currentTypeIndex + 1) % 2; // Change the type for next question
+}
+
+function checkAnswer(isCorrect) {
+    if (isCorrect) {
+        quizContainer.classList.add('correct');
+        setTimeout(() => {
+            quizContainer.classList.remove('correct');
+            currentStage++;
+            generateQuiz();
+        }, 500);
+    } else {
+        quizContainer.classList.add('incorrect');
+        setTimeout(() => {
+            quizContainer.classList.remove('incorrect');
+        }, 500);
+    }
+}
+
+toggleLessonsButton.addEventListener('click', function() {
+    if (lessonContainer.style.display === 'none') {
+        lessonContainer.style.display = 'block';
+        toggleLessonsButton.textContent = 'Hide Lessons';
+    } else {
+        lessonContainer.style.display = 'none';
+        toggleLessonsButton.textContent = 'Show Lessons';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('startQuiz').addEventListener('click', startQuiz);
+    document.getElementById('quitQuiz').addEventListener('click', () => {
+        quizContainer.style.display = 'none';
+        lessonContainer.style.display = 'block'; // Ensure the menu is visible when quitting quiz
+        currentStage = 1;
+    });
+
+    flipCheckbox.addEventListener('change', generateQuiz);
+});
