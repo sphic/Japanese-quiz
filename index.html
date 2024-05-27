@@ -274,47 +274,47 @@
         }
 
         function generateQuiz() {
-            const randomIndex = Math.floor(Math.random() * masterSet1.length);
-            let question, answer;
+    const randomIndex = Math.floor(Math.random() * masterSet1.length);
+    let question, answer;
 
-            if (flipCheckbox.checked) {
-                question = masterSet2[randomIndex];
-                answer = masterSet1[randomIndex];
-            } else {
-                question = masterSet1[randomIndex];
-                answer = masterSet2[randomIndex];
-            }
+    if (flipCheckbox.checked) {
+        question = masterSet2[randomIndex];
+        answer = masterSet1[randomIndex];
+    } else {
+        question = masterSet1[randomIndex];
+        answer = masterSet2[randomIndex];
+    }
 
-            quizCharacter.textContent = question;
-            answerOptions.innerHTML = '';
+    quizCharacter.textContent = question;
+    answerOptions.innerHTML = '';
 
-            const wrongAnswers = [];
-            while (wrongAnswers.length < 2) {
-                const randomWrongIndex = Math.floor(Math.random() * masterSet1.length);
-                let wrongAnswer;
-                if (flipCheckbox.checked) {
-                    wrongAnswer = masterSet1[randomWrongIndex];
-                } else {
-                    wrongAnswer = masterSet2[randomWrongIndex];
-                }
-                if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer)) {
-                    wrongAnswers.push(wrongAnswer);
-                }
-            }
-
-            const answerArray = [answer, ...wrongAnswers];
-            answerArray.sort(() => Math.random() - 0.5);
-
-           answerArray.forEach(answer => {
-    const button = document.createElement('button');
-    button.textContent = answer;
-    button.addEventListener('click', checkAnswer.bind(null, answer));
-    answerOptions.appendChild(button);
-});
-
-            quizStage.textContent = currentStage;
-            currentTypeIndex = (currentTypeIndex + 1) % 2; // Change the type for next question
+    const wrongAnswers = [];
+    while (wrongAnswers.length < 2) {
+        const randomWrongIndex = Math.floor(Math.random() * masterSet1.length);
+        let wrongAnswer;
+        if (flipCheckbox.checked) {
+            wrongAnswer = masterSet1[randomWrongIndex];
+        } else {
+            wrongAnswer = masterSet2[randomWrongIndex];
         }
+        if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer)) {
+            wrongAnswers.push(wrongAnswer);
+        }
+    }
+
+    const answerArray = [answer, ...wrongAnswers];
+    answerArray.sort(() => Math.random() - 0.5);
+
+    answerArray.forEach(answerOption => {
+        const button = document.createElement('button');
+        button.textContent = answerOption;
+        button.addEventListener('click', () => checkAnswer(answerOption));
+        answerOptions.appendChild(button);
+    });
+
+    quizStage.textContent = currentStage;
+    currentTypeIndex = (currentTypeIndex + 1) % 2; // Change the type for next question
+}
 
         function checkAnswer(selectedAnswer) {
     const correctAnswer = flipCheckbox.checked ? masterSet1[randomIndex] : masterSet2[randomIndex];
