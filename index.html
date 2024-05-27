@@ -237,43 +237,43 @@
 
     <script>
         const quizCharacter = document.getElementById('quizCharacter');
-        const answerOptions = document.getElementById('answerOptions');
-        const quizStage = document.getElementById('quizStage');
-        const quizContainer = document.getElementById('quizContainer');
-        const lessonContainer = document.querySelector('.lesson-container');
-        const toggleLessonsButton = document.getElementById('toggleLessons');
-        const flipCheckbox = document.getElementById('flipQuestionAnswer');
+const answerOptions = document.getElementById('answerOptions');
+const quizStage = document.getElementById('quizStage');
+const quizContainer = document.getElementById('quizContainer');
+const lessonContainer = document.querySelector('.lesson-container');
+const toggleLessonsButton = document.getElementById('toggleLessons');
+const flipCheckbox = document.getElementById('flipQuestionAnswer');
 
-        let currentStage = 1;
-        let masterSet1 = [];
-        let masterSet2 = [];
-        let currentTypeIndex = 0; // 0 for Kanji, 1 for Vocabulary
+let currentStage = 1;
+let masterSet1 = [];
+let masterSet2 = [];
+let currentTypeIndex = 0; // 0 for Kanji, 1 for Vocabulary
 
-        function startQuiz() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+function startQuiz() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
-            masterSet1 = [];
-            masterSet2 = [];
+    masterSet1 = [];
+    masterSet2 = [];
 
-            checkboxes.forEach(checkbox => {
-                const set1 = JSON.parse(checkbox.dataset.set1);
-                const set2 = JSON.parse(checkbox.dataset.set2);
-                masterSet1 = masterSet1.concat(set1);
-                masterSet2 = masterSet2.concat(set2);
-            });
+    checkboxes.forEach(checkbox => {
+        const set1 = JSON.parse(checkbox.dataset.set1);
+        const set2 = JSON.parse(checkbox.dataset.set2);
+        masterSet1 = masterSet1.concat(set1);
+        masterSet2 = masterSet2.concat(set2);
+    });
 
-            if (masterSet1.length === 0 || masterSet2.length === 0) {
-                alert('Please select at least one lesson.');
-                return;
-            }
+    if (masterSet1.length === 0 || masterSet2.length === 0) {
+        alert('Please select at least one lesson.');
+        return;
+    }
 
-            quizContainer.style.display = 'block';
-            lessonContainer.style.display = 'none'; // Add this line to collapse the menu
-            toggleLessonsButton.textContent = 'show Lessons'; // Reset the button text
-            generateQuiz();
-        }
+    quizContainer.style.display = 'block';
+    lessonContainer.style.display = 'none'; // Add this line to collapse the menu
+    toggleLessonsButton.textContent = 'Show Lessons'; // Reset the button text
+    generateQuiz();
+}
 
-       function generateQuiz() {
+function generateQuiz() {
     const randomIndex = Math.floor(Math.random() * masterSet1.length);
     let question, correctAnswer;
 
@@ -334,45 +334,27 @@ function checkAnswer(selectedAnswer, correctAnswer) {
     }
 }
 
-        function checkAnswer(selectedAnswer) {
-    const correctAnswer = flipCheckbox.checked ? masterSet1[randomIndex] : masterSet2[randomIndex];
-    const isCorrect = selectedAnswer === correctAnswer;
-
-    if (isCorrect) {
-        quizContainer.classList.add('correct');
-        setTimeout(() => {
-            quizContainer.classList.remove('correct');
-            currentStage++;
-            generateQuiz();
-        }, 500);
+toggleLessonsButton.addEventListener('click', function() {
+    if (lessonContainer.style.display === 'none') {
+        lessonContainer.style.display = 'block';
+        toggleLessonsButton.textContent = 'Hide Lessons';
     } else {
-        quizContainer.classList.add('incorrect');
-        setTimeout(() => {
-            quizContainer.classList.remove('incorrect');
-        }, 500);
+        lessonContainer.style.display = 'none';
+        toggleLessonsButton.textContent = 'Show Lessons';
     }
-}
+});
 
-        toggleLessonsButton.addEventListener('click', function() {
-            if (lessonContainer.style.display === 'none') {
-                lessonContainer.style.display = 'block';
-                toggleLessonsButton.textContent = 'Hide Lessons';
-            } else {
-                lessonContainer.style.display = 'none';
-                toggleLessonsButton.textContent = 'show Lessons';
-            }
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('startQuiz').addEventListener('click', startQuiz);
+    document.getElementById('quitQuiz').addEventListener('click', () => {
+        quizContainer.style.display = 'none';
+        lessonContainer.style.display = 'block'; // Ensure the menu is visible when quitting quiz
+        currentStage = 1;
+    });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('startQuiz').addEventListener('click', startQuiz);
-            document.getElementById('quitQuiz').addEventListener('click', () => {
-                quizContainer.style.display = 'none';
-                lessonContainer.style.display = 'block'; // Ensure the menu is visible when quitting quiz
-                currentStage = 1;
-            });
+    flipCheckbox.addEventListener('change', generateQuiz);
+});
 
-            flipCheckbox.addEventListener('change', generateQuiz);
-        });
     </script>
 </body>
 </html>
