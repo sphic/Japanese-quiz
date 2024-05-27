@@ -305,32 +305,33 @@
             const answerArray = [answer, ...wrongAnswers];
             answerArray.sort(() => Math.random() - 0.5);
 
-            answerArray.forEach(answer => {
-                const button = document.createElement('button');
-                button.textContent = answer;
-                button.addEventListener('click', checkAnswer.bind(null, answer === answer));
-                answerOptions.appendChild(button);
-            });
+           answerArray.forEach(answer => {
+    const button = document.createElement('button');
+    button.textContent = answer;
+    button.addEventListener('click', checkAnswer.bind(null, answer));
+    answerOptions.appendChild(button);
+});
 
             quizStage.textContent = currentStage;
             currentTypeIndex = (currentTypeIndex + 1) % 2; // Change the type for next question
         }
 
-        function checkAnswer(isCorrect) {
-            if (isCorrect) {
-                quizContainer.classList.add('correct');
-                setTimeout(() => {
-                    quizContainer.classList.remove('correct');
-                    currentStage++;
-                    generateQuiz();
-                }, 500);
-            } else {
-                quizContainer.classList.add('incorrect');
-                setTimeout(() => {
-                    quizContainer.classList.remove('incorrect');
-                }, 500);
-            }
-        }
+        function checkAnswer(selectedAnswer) {
+    const isCorrect = selectedAnswer === (flipCheckbox.checked ? masterSet1[randomIndex] : masterSet2[randomIndex]);
+    if (isCorrect) {
+        quizContainer.classList.add('correct');
+        setTimeout(() => {
+            quizContainer.classList.remove('correct');
+            currentStage++;
+            generateQuiz();
+        }, 500);
+    } else {
+        quizContainer.classList.add('incorrect');
+        setTimeout(() => {
+            quizContainer.classList.remove('incorrect');
+        }, 500);
+    }
+}
 
         toggleLessonsButton.addEventListener('click', function() {
             if (lessonContainer.style.display === 'none') {
