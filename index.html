@@ -317,7 +317,9 @@
         }
 
         function checkAnswer(selectedAnswer) {
-    const isCorrect = selectedAnswer === (flipCheckbox.checked ? masterSet1[randomIndex] : masterSet2[randomIndex]);
+    const correctAnswer = flipCheckbox.checked ? masterSet1[randomIndex] : masterSet2[randomIndex];
+    const isCorrect = selectedAnswer === correctAnswer;
+
     if (isCorrect) {
         quizContainer.classList.add('correct');
         setTimeout(() => {
