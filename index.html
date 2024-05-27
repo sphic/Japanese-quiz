@@ -273,16 +273,16 @@
             generateQuiz();
         }
 
-        function generateQuiz() {
+       function generateQuiz() {
     const randomIndex = Math.floor(Math.random() * masterSet1.length);
-    let question, answer;
+    let question, correctAnswer;
 
     if (flipCheckbox.checked) {
         question = masterSet2[randomIndex];
-        answer = masterSet1[randomIndex];
+        correctAnswer = masterSet1[randomIndex];
     } else {
         question = masterSet1[randomIndex];
-        answer = masterSet2[randomIndex];
+        correctAnswer = masterSet2[randomIndex];
     }
 
     quizCharacter.textContent = question;
@@ -297,23 +297,41 @@
         } else {
             wrongAnswer = masterSet2[randomWrongIndex];
         }
-        if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer)) {
+        if (wrongAnswer !== correctAnswer && !wrongAnswers.includes(wrongAnswer)) {
             wrongAnswers.push(wrongAnswer);
         }
     }
 
-    const answerArray = [answer, ...wrongAnswers];
+    const answerArray = [correctAnswer, ...wrongAnswers];
     answerArray.sort(() => Math.random() - 0.5);
 
     answerArray.forEach(answerOption => {
         const button = document.createElement('button');
         button.textContent = answerOption;
-        button.addEventListener('click', () => checkAnswer(answerOption));
+        button.addEventListener('click', () => checkAnswer(answerOption, correctAnswer));
         answerOptions.appendChild(button);
     });
 
     quizStage.textContent = currentStage;
     currentTypeIndex = (currentTypeIndex + 1) % 2; // Change the type for next question
+}
+
+function checkAnswer(selectedAnswer, correctAnswer) {
+    const isCorrect = selectedAnswer === correctAnswer;
+
+    if (isCorrect) {
+        quizContainer.classList.add('correct');
+        setTimeout(() => {
+            quizContainer.classList.remove('correct');
+            currentStage++;
+            generateQuiz();
+        }, 500);
+    } else {
+        quizContainer.classList.add('incorrect');
+        setTimeout(() => {
+            quizContainer.classList.remove('incorrect');
+        }, 500);
+    }
 }
 
         function checkAnswer(selectedAnswer) {
